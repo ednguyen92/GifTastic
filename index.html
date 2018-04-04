@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <!-- Page Title -->
+        <title>GifTastic Super Heroes!</title>
+        <!-- Linking page to Bootstrap 3 -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">        
+        <!-- Linking page to Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+        <!-- Linking page to CSS -->
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <!-- Linking page to JQuery -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+
+
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <form id="hero-form">
+      <label for="hero-input">Add a Super Hero!</label>
+      <input type="text" id="hero-input">
+      <br>
+
+      <!-- Button triggers new movie to be added -->
+      <input id="add-hero" type="submit" value="Add a Super Hero">
+    </form>
+
+        <!-- Movies will Get Dumped Dere -->
+        <div id="heroes-view"></div>
+</div>
+    
+
+        <!-- Linking page to .js file -->
+        <script type="text/javascript" src="assets/javascript/app.js"></script>
+</body>
+
+</html>
