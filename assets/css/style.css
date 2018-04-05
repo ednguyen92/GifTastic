@@ -1,0 +1,17 @@
+body {
+    width: 100%;
+}
+
+.container {
+    float: left;
+
+}
+
+.form-container {
+    float: right;
+
+}
+
+.hero-btn {
+    margin: 5px;
+}

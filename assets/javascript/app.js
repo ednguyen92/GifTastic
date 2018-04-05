@@ -1,91 +1,77 @@
-// Initial array of heroes
 var heroes = ["Captain America", "SuperMan", "Iron Man", "BatMan"];
 
-// displayMovieInfo function re-renders the HTML to display the appropriate content
 function displayHeroGif() {
 
   var hero = $(this).attr("data-name");
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + hero + "&api_key=RHNboMWxPzn4etLyVjU3xI077lGKgtvU";
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + hero + "&api_key=RHNboMWxPzn4etLyVjU3xI077lGKgtvU&limit=10";
 
-  // Creating an AJAX call for the specific movie button being clicked
   $.ajax({
     url: queryURL,
     method: "GET"
-  }).then(function(response) {
+  }).then(function (response) {
     console.log(response);
 
-              // Creating a div to hold the movie
-              var heroDiv = $("<div class='hero'>");
+    var gifs = response.data;
 
-              // Storing the rating data
-              var rating = response.rating;
-    
-              // Creating an element to have the rating displayed
-              var pOne = $("<p>").text("Rating: " + rating);
-    
-              // Displaying the rating
-              heroDiv.append(pOne);
+    for (var i = 0; i < gifs.length; i++) {
+      var heroDiv = $('<div>');
 
-                        // Retrieving the URL for the image
-          var imgURL = response.Poster;
+      var p = $('<p>').html('<h3>Rating: ' + gifs[i].rating + '</h3>');
 
-          // Creating an element to hold the image
-          var image = $("<img>").attr("src", imgURL);
+      var heroImage = $('<img>').addClass('heroImg').attr('src', gifs[i].images.fixed_height_still.url);
 
-          // Appending the image
-          movieDiv.append(image);
+      heroImage.attr('data-still', gifs[i].images.fixed_height_still.url);
 
-          // Putting the entire movie above the previous movies
-          $("#movies-view").prepend(movieDiv);
+      heroImage.attr('data-animate', gifs[i].images.fixed_height.url);
+
+      heroDiv.append(p);
+
+      heroDiv.append(heroImage);
+
+      $(".heroes-view").prepend(heroDiv);
+    }
+    $(".heroImg").on("click", function () {
+      var state = $(this).attr("data-state");
+
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
 
   });
 
 }
 
+function renderButtons() {
 
-      // Function for displaying movie data
-      function renderButtons() {
+  $("#buttons-view").empty();
 
-        // Deleting the movie buttons prior to adding new movie buttons
-        // (this is necessary otherwise we will have repeat buttons)
-        $("#buttons-view").empty();
+  for (var i = 0; i < heroes.length; i++) {
+    var heroBtn = $("<button>").addClass("btn btn-primary hero-btn");
 
-        // Looping through the array of movies
-        for (var i = 0; i < heroes.length; i++) {
+    heroBtn.attr("data-name", heroes[i]);
 
-          // Then dynamicaly generating buttons for each movie in the array.
-          // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
-          var heroBtn = $("<button>");
-          // Adding a class
-          heroBtn.addClass("hero-btn");
-          // Adding a data-attribute with a value of the movie at index i
-          heroBtn.attr("data-name", heroes[i]);
-          // Providing the button's text with a value of the movie at index i
-          heroBtn.text(heroes[i]);
-          // Adding the button to the HTML
-          $("#buttons-view").append(heroBtn);
-        }
-      }
+    heroBtn.text(heroes[i]);
 
-      // This function handles events where one button is clicked
-      $("#add-hero").on("click", function(event) {
-        // event.preventDefault() prevents the form from trying to submit itself.
-        // We're using a form so that the user can hit enter instead of clicking the button if they want
-        event.preventDefault();
+    $("#buttons-view").append(heroBtn);
+  }
+}
 
-        // This line will grab the text from the input box
-        var hero = $("#hero-input").val().trim();
-        // The movie from the textbox is then added to our array
-        heroes.push(hero);
+$(".add-hero").on("click", function (event) {
 
-        // calling renderButtons which handles the processing of our movie array
-        renderButtons();
-      });
+  event.preventDefault();
 
-      
-      // Adding a click event listener to all elements with a class of "movie-btn"
-      $(document).on("click", ".hero-btn", displayHeroGif);
+  var hero = $("#hero-input").val().trim();
 
+  heroes.push(hero);
 
-      // Calling the renderButtons function at least once to display the initial list of movies
-      renderButtons();
+  renderButtons();
+});
+
+$(document).on("click", ".hero-btn", displayHeroGif);
+
+renderButtons();
